@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Record;
-use App\Models\Workclass;
+
 
 class ApiController extends Controller
 {
@@ -30,31 +30,47 @@ class ApiController extends Controller
   // L'API, realizzabile in ​ GET ​ o in ​ POST​ , deve soddisfare questa
   // documentazione fornita dal cliente:
 
-  // input
-  // aggregationType: "age", "education_level_id", "occupation_id" --- aggregationValue: int
+  //   Passando i parametri "aggregationType" = "age" e "aggregationValue" = 30 si ottengono
+  //   le statistiche per tutti coloro che hanno 30 anni
 
-  // output
-  // "aggregationType": "string",
-  // "aggregationFilter": int,
+  public function stats(Request $request){
 
-  // "capital_gain_sum": float,
-  // "capital_gain_avg": float,
+    $aggregationType = $request->type;
+    $aggregationFilter = $request->value;
 
-  // "capital_loss_sum": float,
-  // "capital_loss_avg": float,
+    $query = Record::where($aggregationType, $aggregationFilter);
 
-  // "over_50k_count": int,
-  // "under_50k_count": int
+    $capital_gain_sum = $query->sum('capital_gain');
+    $capital_gain_avg = $query->avg('capital_gain');
 
-//   Passando i parametri "aggregationType" = "age" e "aggregationValue" = 30 si ottengono
-//   le statistiche per tutti coloro che hanno 30 anni
+    $capital_loss_sum = $query->sum('capital_loss');
+    $capital_loss_avg = $query->avg('capital_loss');
 
-  public function xxx(){
-    // code
+    $under_50k_count = Record::where($aggregationType, $aggregationFilter)
+                              ->where('over_50k', '=', 0)
+                              ->count();
+
+    $over_50k_count = Record::where($aggregationType, $aggregationFilter)
+                              ->where('over_50k', '=', 1)
+                              ->count();
+
+    $data = [
+
+      "aggregationType" => $aggregationType,
+      "aggregationFilter" => $aggregationFilter,
+
+      "capital_gain_sum" => $capital_gain_sum,
+      "capital_gain_avg" => $capital_gain_avg,
+
+      "capital_loss_sum" => $capital_loss_sum,
+      "capital_loss_avg" => $capital_loss_avg,
+
+      "over_50k_count" => $over_50k_count,
+      "under_50k_count" => $under_50k_count
+    ];
+
+    return response()->json($data);
   }
 }
-
-
-
 
 // fine
