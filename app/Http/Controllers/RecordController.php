@@ -52,7 +52,9 @@ class RecordController extends Controller
 
       $this_id = $job['id'];
       $this_name = $job['name'];
+
       $category_avg = [];
+      
       $records = Record::where('workclass_id', $this_id );
       $avg = $records->avg('capital_gain');
 

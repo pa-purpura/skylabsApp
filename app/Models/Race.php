@@ -7,10 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 use App\Models\Record;
 
-
-class Workclass extends Model
+class Race extends Model
 {
-  protected $table = 'workclasses';
+  protected $table = 'races';
   public $timestamps = false;
 
   public function records(){

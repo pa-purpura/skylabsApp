@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Record;
 
 
-class Workclass extends Model
+class Relationship extends Model
 {
-  protected $table = 'workclasses';
+  protected $table = 'relationships';
   public $timestamps = false;
 
   public function records(){
