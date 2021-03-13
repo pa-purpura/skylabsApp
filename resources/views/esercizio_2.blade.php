@@ -1,6 +1,6 @@
 @extends('layout')
 @section('content')
 
-  esercizio 1 works!
+  esercizio 2 works!
 
 @endsection

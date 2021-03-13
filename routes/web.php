@@ -25,3 +25,4 @@ Route::get('/laravel', function () {
 
 Route::get('/', [RecordController::class, 'index'])->name('home');
 Route::get('/less30more50', [RecordController::class, 'less30more50'])->name('records.esercizio_1');
+Route::get('/averageGain', [RecordController::class, 'averageGain'])->name('records.esercizio_2');
