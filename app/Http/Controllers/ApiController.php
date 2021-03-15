@@ -9,7 +9,7 @@ use App\Models\Record;
 
 class ApiController extends Controller
 {
-
+  
   // Lista dei record denormalizzati​ , cioè ogni entità deve contenere anche tutte
   // le informazioni derivanti dalle tabelle secondarie del DB.
   // L'API deve essere realizzata in ​ GET e
@@ -29,7 +29,6 @@ class ApiController extends Controller
   // Statistiche ​ aggregate filtrate in base ad alcuni parametri significativi.
   // L'API, realizzabile in ​ GET ​ o in ​ POST​ , deve soddisfare questa
   // documentazione fornita dal cliente:
-
   //   Passando i parametri "aggregationType" = "age" e "aggregationValue" = 30 si ottengono
   //   le statistiche per tutti coloro che hanno 30 anni
 
@@ -55,22 +54,19 @@ class ApiController extends Controller
                               ->count();
 
     $data = [
-
       "aggregationType" => $aggregationType,
       "aggregationFilter" => $aggregationFilter,
-
       "capital_gain_sum" => $capital_gain_sum,
       "capital_gain_avg" => $capital_gain_avg,
-
       "capital_loss_sum" => $capital_loss_sum,
       "capital_loss_avg" => $capital_loss_avg,
-
       "over_50k_count" => $over_50k_count,
       "under_50k_count" => $under_50k_count
     ];
 
     return response()->json($data);
   }
-}
 
+  // chiusura classe
+}
 // fine

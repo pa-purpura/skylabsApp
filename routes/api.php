@@ -24,5 +24,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 Route::get('records', [ApiController::class,'records']);
-
 Route::get('stats', [ApiController::class,'stats']);

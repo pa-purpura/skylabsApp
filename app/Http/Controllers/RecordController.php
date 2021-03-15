@@ -12,11 +12,17 @@ use Illuminate\Support\Facades\DB;
 class RecordController extends Controller
 {
   public function index(){
-
       $data = [
         'title' => 'SkylabsApp',
       ];
       return view('home', $data);
+  }
+
+  public function domande(){
+      $data = [
+        'title' => 'Domande',
+      ];
+      return view('domande', $data);
   }
 
   // Scrivi una query che estragga il ​ numero di persone​ con ​ meno di 30 anni​ che
@@ -26,7 +32,7 @@ class RecordController extends Controller
 
     $records = Record::where('age', '<', 30)
                 ->where('over_50k','=', 1)
-                ->take(20)
+                ->take(10)
                 ->get();
 
     $data = [
@@ -34,13 +40,10 @@ class RecordController extends Controller
       'records' => $records
     ];
 
-    dd($records);
-
     return view('esercizio_1', $data);
   }
 
-  // Scrivi una query che riporti il ​ guadagno di capitale medio​ per ogni categoria
-  // lavorativa
+  // Scrivi una query che riporti il ​ guadagno di capitale medio​ per ogni categoria lavorativa
 
   public function averageGain(){
 
@@ -54,7 +57,7 @@ class RecordController extends Controller
       $this_name = $job['name'];
 
       $category_avg = [];
-      
+
       $records = Record::where('workclass_id', $this_id );
       $avg = $records->avg('capital_gain');
 
@@ -65,7 +68,6 @@ class RecordController extends Controller
       array_push($categories_avg, $category_avg);
 
     }
-    dd($categories_avg);
 
     $data = [
       'title' => 'Esercizio 2',
@@ -75,6 +77,34 @@ class RecordController extends Controller
     return view('esercizio_2', $data);
   }
 
+  // Esponi inoltre, tramite il medesimo servizio web, un endpoint che faccia il download in formato ​ CSV ​ di tutti i dati ​
+  // denormalizzati (cioè ogni riga deve contenere sia il record che tutti i dati relazionati dalle altre tabelle)
+
+  public function csv(){
+
+    $data = Record::with('workclass', 'sex', 'country', 'education_level', 'marital_status', 'relationship', 'occupation', 'race')
+                        ->take(10) //ne prendo solo 10 a titolo d'esempio, per evitare il download di 48 mila records.
+                        ->get();
+
+    $csvExporter = new \Laracsv\Export();
+
+    $csvExporter->build($data, [
+      'age' => 'Età',
+      'sex.name' => 'Sesso',
+      'race.name' => 'Razza',
+      'country.name' => 'Nazione',
+      'workclass.name' => 'Classe',
+      'occupation.name' => 'Occupazione',
+      'education_level.name' => 'Educazione',
+      'marital_status.name' => 'Stato civile',
+      'capital_gain' => 'Capitale +',
+      'capital_loss' => 'Capitale -',
+      'over_50k' => '+/- 50K',
+    ])->download();
+
+  }
+
+// chiusura classe
 }
 
 

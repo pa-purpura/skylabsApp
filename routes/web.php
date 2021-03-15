@@ -19,10 +19,8 @@ Route::get('/laravel', function () {
     return view('welcome');
 });
 
-// Route::get('/', function () {
-//     return view('home');
-// })->('home');
-
-Route::get('/', [RecordController::class, 'index'])->name('home');
+Route::get('/home', [RecordController::class, 'index'])->name('home');
+Route::get('/domande', [RecordController::class, 'domande'])->name('domande');
 Route::get('/less30more50', [RecordController::class, 'less30more50'])->name('records.esercizio_1');
 Route::get('/averageGain', [RecordController::class, 'averageGain'])->name('records.esercizio_2');
+Route::get('/csv', [RecordController::class, 'csv'])->name('create.csv');
